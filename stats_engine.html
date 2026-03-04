@@ -2,7 +2,9 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Statistics Problem Generator</title>
+    <title>Statistics Exam Simulator</title>
+
+    <script src="stats.js"></script>
 
     <style>
 
@@ -11,15 +13,14 @@
             max-width: 900px;
             margin: auto;
             padding: 20px;
-            background: #f4f4f4;
+            background: #f5f5f5;
         }
 
         .problem {
             background: white;
             padding: 20px;
-            margin: 20px 0;
+            margin-top: 20px;
             border-radius: 10px;
-            box-shadow: 0 0 6px rgba(0,0,0,0.1);
         }
 
         .answer {
@@ -44,74 +45,82 @@
 
     <div id="problem"></div>
 
-    <script>let questions=[]
+    <script>
 
-fetch("questions.json")
-.then(res=>res.json())
-.then(data=>{
-    questions=data
-})
+        let questions = []
 
-function rand(min,max){
+        fetch("questions.json")
+            .then(res => res.json())
+            .then(data => {
+                questions = data
+            })
 
-return Math.floor(Math.random()*(max-min+1))+min
+        function rand(min, max) {
 
-}
+            return Math.floor(Math.random() * (max - min + 1)) + min
 
-function generate(){
+        }
 
-let q = questions[Math.floor(Math.random()*questions.length)]
+        function generate() {
 
-let text = q.template
+            let q = questions[Math.floor(Math.random() * questions.length)]
 
-let values={}
+            let text = q.template
 
-if(q.params){
+            let values = {}
 
-for(let key in q.params){
+            if (q.params) {
 
-let range=q.params[key]
+                for (let key in q.params) {
 
-let value=rand(range[0],range[1])
+                    let r = q.params[key]
 
-values[key]=value
+                    let v = rand(r[0], r[1])
 
-text=text.replace("{"+key+"}",value)
+                    values[key] = v
 
-}
+                    text = text.replace("{" + key + "}", v)
 
-}
+                }
 
-let answer=""
+            }
 
-if(q.answer){
+            let answer = ""
 
-answer=q.answer
+            if (q.type === "binomial") {
 
-}
+                answer = binomial(values.n, values.k, q.p).toFixed(4)
 
-if(q.formula){
+            }
 
-let expr=q.formula
+            if (q.type === "poisson") {
 
-for(let key in values){
+                answer = poisson(values.lambda, values.k).toFixed(4)
 
-expr=expr.replaceAll(key,values[key])
+            }
 
-}
+            if (q.type === "zscore") {
 
-answer=eval(expr).toFixed(2)
+                answer = zscore(values.x, values.mu, values.sigma).toFixed(2)
 
-}
+            }
 
-document.getElementById("problem").innerHTML=
+            if (q.type === "normalprob") {
 
-`
+                answer = normalCDF(values.z).toFixed(4)
+
+            }
+
+            document.getElementById("problem").innerHTML =
+
+                `
 <div class="problem">
 
 ${text}
 
-<br><button onclick="toggle()">Show Answer</button>
+<br>
+
+<button onclick="toggle()">Show Answer</button>
 
 <div id="answer" class="answer">
 
@@ -122,15 +131,17 @@ ${answer}
 </div>
 `
 
-}
+        }
 
-function toggle(){
+        function toggle() {
 
-let a=document.getElementById("answer")
+            let a = document.getElementById("answer")
 
-a.style.display = a.style.display==="none"?"block":"none"
+            a.style.display = a.style.display === "none" ? "block" : "none"
 
-}</script>
+        }
+
+    </script>
 
 </body>
 </html>

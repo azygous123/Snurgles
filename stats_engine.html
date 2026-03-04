@@ -111,6 +111,14 @@
 
             }
 
+            if (q.type === "empirical") {
+
+                if (values.sd == 1) answer = "68%"
+                if (values.sd == 2) answer = "95%"
+                if (values.sd == 3) answer = "99.7%"
+
+            }
+
             document.getElementById("problem").innerHTML =
 
                 `

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Statistics Problem Generator</title>
+
+    <style>
+
+        body {
+            font-family: Arial;
+            max-width: 900px;
+            margin: auto;
+            padding: 20px;
+            background: #f4f4f4;
+        }
+
+        .problem {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 0 6px rgba(0,0,0,0.1);
+        }
+
+        .answer {
+            display: none;
+            color: green;
+            margin-top: 10px;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 6px 12px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <h1>Statistics Problem Generator</h1>
+
+    <button onclick="generate()">Generate Problem</button>
+
+    <div id="problem"></div>
+
+    <script>let questions=[]
+
+fetch("questions.json")
+.then(res=>res.json())
+.then(data=>{
+    questions=data
+})
+
+function rand(min,max){
+
+return Math.floor(Math.random()*(max-min+1))+min
+
+}
+
+function generate(){
+
+let q = questions[Math.floor(Math.random()*questions.length)]
+
+let text = q.template
+
+let values={}
+
+if(q.params){
+
+for(let key in q.params){
+
+let range=q.params[key]
+
+let value=rand(range[0],range[1])
+
+values[key]=value
+
+text=text.replace("{"+key+"}",value)
+
+}
+
+}
+
+let answer=""
+
+if(q.answer){
+
+answer=q.answer
+
+}
+
+if(q.formula){
+
+let expr=q.formula
+
+for(let key in values){
+
+expr=expr.replaceAll(key,values[key])
+
+}
+
+answer=eval(expr).toFixed(2)
+
+}
+
+document.getElementById("problem").innerHTML=
+
+`
+<div class="problem">
+
+${text}
+
+<br><button onclick="toggle()">Show Answer</button>
+
+<div id="answer" class="answer">
+
+${answer}
+
+</div>
+
+</div>
+`
+
+}
+
+function toggle(){
+
+let a=document.getElementById("answer")
+
+a.style.display = a.style.display==="none"?"block":"none"
+
+}</script>
+
+</body>
+</html>

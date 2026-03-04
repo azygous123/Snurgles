@@ -1,0 +1,36 @@
+[
+  {
+    "type": "binomial",
+    "template": "A multiple choice test has 4 options per question. A student guesses on {n} questions. What distribution models this?",
+    "params": {
+      "n": [ 8, 15 ]
+    },
+    "answer": "Binomial"
+  },
+
+  {
+    "type": "poisson",
+    "template": "Calls arrive at an average rate of {lambda} per minute. What distribution models this?",
+    "params": {
+      "lambda": [ 2, 8 ]
+    },
+    "answer": "Poisson"
+  },
+
+  {
+    "type": "zscore",
+    "template": "Find the z-score when x={x}, μ={mu}, σ={sigma}",
+    "params": {
+      "x": [ 80, 120 ],
+      "mu": [ 90, 110 ],
+      "sigma": [ 5, 15 ]
+    },
+    "formula": "(x-mu)/sigma"
+  },
+
+  {
+    "type": "empirical",
+    "template": "Using the empirical rule, approximately what percent of data lies within one standard deviation of the mean?",
+    "answer": "68%"
+  }
+]

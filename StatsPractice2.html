@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Statistics Midterm Trainer</title>
+
+    <style>
+
+        body {
+            font-family: Arial;
+            max-width: 1000px;
+            margin: auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 0 8px rgba(0,0,0,0.1);
+        }
+
+        .problem {
+            margin-top: 10px;
+        }
+
+        .answer {
+            display: none;
+            margin-top: 10px;
+            color: green;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 6px 12px;
+        }
+
+        input {
+            padding: 5px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <h1>Statistics Midterm Practice Trainer</h1>
+
+    <div class="section">
+
+        <h2>Random Practice Generator</h2>
+
+        <button onclick="generate()">Generate Problems</button>
+
+        <div id="practice"></div>
+
+    </div>
+
+
+    <div class="section">
+
+        <h2>Guess the Distribution</h2>
+
+        <button onclick="distributionQuiz()">New Question</button>
+
+        <div id="distQuiz"></div>
+
+    </div>
+
+
+    <div class="section">
+
+        <h2>Z-Score Calculator</h2>
+
+        μ <input id="mean">
+        σ <input id="sd">
+        x <input id="value">
+
+        <button onclick="calcZ()">Calculate Z</button>
+
+        <div id="zResult"></div>
+
+    </div>
+
+
+
+    <script>function rand(min,max){
+return Math.floor(Math.random()*(max-min+1))+min
+}
+
+function toggle(id){
+
+let x=document.getElementById(id)
+
+x.style.display = x.style.display==="none"?"block":"none"
+
+}
+
+function generate(){
+
+let out=document.getElementById("practice")
+
+out.innerHTML=""
+
+let nums=[]
+
+for(let i=0;i<7;i++)
+nums.push(rand(10,50))
+
+let mean=nums.reduce((a,b)=>a+b)/nums.length
+
+let p=rand(20,40)/100
+
+let n=rand(10,15)
+
+let lambda=rand(2,6)
+
+let x=rand(80,120)
+
+let z=(x-100)/10
+
+let html=""
+
+html+=`
+<div class="problem">
+
+<b>1. Mean Problem</b><br><br>
+
+Dataset: {${nums.join(", ")}}
+
+<br><button onclick="toggle('a1')">Show Answer</button>
+
+<div id="a1" class="answer">
+
+Mean = ${mean.toFixed(2)}
+
+</div>
+
+</div>
+`
+
+html+=`
+<div class="problem">
+
+<b>2. Binomial</b><br><br>
+
+A student guesses on ${n} multiple choice questions.
+
+Probability of guessing correctly = 0.25
+
+What distribution models this?
+
+<br><button onclick="toggle('a2')">Show Answer</button>
+
+<div id="a2" class="answer">
+
+X ~ Bin(${n},0.25)
+
+</div>
+
+</div>
+`
+
+html+=`
+<div class="problem">
+
+<b>3. Poisson</b><br><br>
+
+Calls arrive at a rate of ${lambda} per minute.
+
+What distribution should be used?
+
+<br><button onclick="toggle('a3')">Show Answer</button>
+
+<div id="a3" class="answer">
+
+Poisson distribution
+
+X ~ Pois(${lambda})
+
+</div>
+
+</div>
+`
+
+html+=`
+<div class="problem">
+
+<b>4. Z-Score</b><br><br>
+
+Find the z score.
+
+x=${x}
+
+μ=100
+
+σ=10
+
+<br><button onclick="toggle('a4')">Show Answer</button>
+
+<div id="a4" class="answer">
+
+z = ${z.toFixed(2)}
+
+</div>
+
+</div>
+`
+
+html+=`
+<div class="problem">
+
+<b>5. Empirical Rule</b><br><br>
+
+What percent of data lies within 1 standard deviation?
+
+<br><button onclick="toggle('a5')">Show Answer</button>
+
+<div id="a5" class="answer">
+
+About 68%
+
+</div>
+
+</div>
+`
+
+out.innerHTML=html
+
+}
+
+
+
+function distributionQuiz(){
+
+let r=rand(1,4)
+
+let q=""
+
+let ans=""
+
+if(r==1){
+
+q="Customers arrive at an average rate of 5 per minute."
+
+ans="Poisson"
+
+}
+
+if(r==2){
+
+q="10 coin flips. Count number of heads."
+
+ans="Binomial"
+
+}
+
+if(r==3){
+
+q="Height of people with mean and standard deviation."
+
+ans="Normal"
+
+}
+
+if(r==4){
+
+q="Selecting households randomly from neighborhoods."
+
+ans="Sampling method"
+
+}
+
+document.getElementById("distQuiz").innerHTML=
+
+`
+<div class="problem">
+
+${q}
+
+<br><button onclick="toggle('distAns')">Answer</button>
+
+<div id="distAns" class="answer">
+
+${ans}
+
+</div>
+
+</div>
+`
+
+}
+
+
+function calcZ(){
+
+let mean=parseFloat(document.getElementById("mean").value)
+
+let sd=parseFloat(document.getElementById("sd").value)
+
+let x=parseFloat(document.getElementById("value").value)
+
+let z=(x-mean)/sd
+
+document.getElementById("zResult").innerHTML=
+
+"Z score = "+z.toFixed(3)
+
+}
+
+
+generate()</script>
+
+</body>
+
+</html>

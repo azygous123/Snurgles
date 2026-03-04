@@ -149,7 +149,88 @@ ${answer}
 
         }
 
+        function drawNormal() {
+
+            let canvas = document.getElementById("normalCanvas")
+            let ctx = canvas.getContext("2d")
+
+            ctx.clearRect(0, 0, 600, 300)
+
+            let z = (Math.random() * 4) - 2
+
+            document.getElementById("normalQuestion").innerHTML =
+                "Find P(Z < " + z.toFixed(2) + ")"
+
+            let mean = 300
+            let scale = 80
+
+            ctx.beginPath()
+
+            for (let x = -3; x <= 3; x += 0.01) {
+
+                let y = Math.exp(-0.5 * x * x)
+
+                let px = mean + x * scale
+                let py = 250 - y * 200
+
+                if (x === -3)
+                    ctx.moveTo(px, py)
+                else
+                    ctx.lineTo(px, py)
+
+            }
+
+            ctx.stroke()
+
+            ctx.beginPath()
+
+            for (let x = -3; x <= z; x += 0.01) {
+
+                let y = Math.exp(-0.5 * x * x)
+
+                let px = mean + x * scale
+                let py = 250 - y * 200
+
+                if (x === -3)
+                    ctx.moveTo(px, 250)
+
+                ctx.lineTo(px, py)
+
+            }
+
+            ctx.lineTo(mean + z * scale, 250)
+
+            ctx.fillStyle = "rgba(100,150,255,0.5)"
+            ctx.fill()
+
+            let prob = normalCDF(z)
+
+            document.getElementById("normalAnswer").innerHTML =
+
+                "<br><button onclick='showNormal(" + prob + ")'>Show Answer</button>"
+
+        }
+
+        function showNormal(p) {
+
+            document.getElementById("normalAnswer").innerHTML =
+
+                "Probability = " + p.toFixed(4)
+
+        }
+
+
     </script>
+
+    <h2>Normal Distribution Visualizer</h2>
+
+    <button onclick="drawNormal()">Generate Problem</button>
+
+    <canvas id="normalCanvas" width="600" height="300"></canvas>
+
+    <div id="normalQuestion"></div>
+    <div id="normalAnswer"></div>
+
 
 </body>
 </html>

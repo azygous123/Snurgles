@@ -1,12 +1,16 @@
 ﻿<!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title>Statistics Midterm Practice</title>
 
+    <script src="stats2.js"></script>
+
     <style>
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: Arial;
             max-width: 900px;
             margin: auto;
             padding: 20px;
@@ -41,6 +45,7 @@
             font-size: 16px;
         }
     </style>
+
 </head>
 
 <body>
@@ -51,172 +56,132 @@
 
     <div id="problems"></div>
 
-    <script>function rand(min,max){
-    return Math.floor(Math.random()*(max-min+1))+min;
-}
+    <script>
 
-function toggleAnswer(id){
-    let el=document.getElementById(id);
-    el.style.display = el.style.display==="none" ? "block":"none";
-}
+        let questionBank = []
 
-function generateProblems(){
-
-let container=document.getElementById("problems");
-container.innerHTML="";
-
-let problems=[];
+        fetch("questions2.json")
+            .then(res => res.json())
+            .then(data => {
+                questionBank = data
+            })
 
 
-/* -------------------------
-Mean / Variance
--------------------------- */
-
-let nums=[];
-for(let i=0;i<6;i++) nums.push(rand(5,40));
-
-let mean = nums.reduce((a,b)=>a+b)/nums.length;
-
-problems.push({
-q:`Dataset: {${nums.join(", ")}} <br>
-Find the sample mean.`,
-a:`Mean = ${mean.toFixed(2)}`
-});
+        function rand(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min
+        }
 
 
-/* -------------------------
-Binomial
--------------------------- */
-
-let n=rand(8,15);
-let p=0.25;
-let k=rand(0,3);
-
-problems.push({
-q:`A multiple choice test has 4 options per question.
-A student guesses on ${n} questions.
-
-What distribution models this?
-What is P(X = ${k})?`,
-a:`Distribution: Binomial(n=${n}, p=0.25)`
-});
+        function toggle(id) {
+            let el = document.getElementById(id)
+            el.style.display = el.style.display === "none" ? "block" : "none"
+        }
 
 
-/* -------------------------
-Poisson
--------------------------- */
+        function generateProblems() {
 
-let lambda=rand(2,8);
+            let container = document.getElementById("problems")
+            container.innerHTML = ""
 
-problems.push({
-q:`Calls arrive at a call center at an average rate of ${lambda} per minute.
+            for (let i = 0; i < 6; i++) {
 
-What distribution should be used?
-Write the shorthand notation.`,
-a:`Poisson distribution: X ~ Pois(${lambda})`
-});
+                let q = questionBank[Math.floor(Math.random() * questionBank.length)]
 
+                let values = {}
+                let text = q.template
 
-/* -------------------------
-Empirical Rule
--------------------------- */
+                if (q.params) {
 
-let mu=rand(60,100);
-let sd=rand(5,15);
+                    for (let key in q.params) {
 
-problems.push({
-q:`A normal distribution has mean ${mu} and standard deviation ${sd}.
+                        let range = q.params[key]
 
-Using the empirical rule, what percent of data lies between
-${mu-sd} and ${mu+sd}?`,
-a:`About 68%`
-});
+                        let value = rand(range[0], range[1])
 
+                        values[key] = value
 
-/* -------------------------
-Probability Union
--------------------------- */
+                        text = text.replaceAll("{" + key + "}", value)
 
-let A=rand(40,70)/100;
-let B=rand(20,50)/100;
-let both=rand(5,20)/100;
+                    }
 
-problems.push({
-q:`P(A)=${A}, P(B)=${B}, P(A∩B)=${both}
+                }
 
-Find P(A ∪ B).`,
-a:`P(A ∪ B) = P(A)+P(B)-P(A∩B)`
-});
+                let answer = ""
+                let steps = ""
 
+                if (q.type === "zscore") {
 
-/* -------------------------
-Z Score
--------------------------- */
+                    let z = zscore(values.x, values.mu, values.sigma)
 
-let x=rand(80,120);
-let meanZ=100;
-let sdZ=10;
+                    answer = z.toFixed(2)
 
-let z=(x-meanZ)/sdZ;
+                    steps =
+                        "z = (x - μ) / σ<br>" +
+                        "z = (" + values.x + " - " + values.mu + ") / " + values.sigma + "<br>" +
+                        "z = " + answer
 
-problems.push({
-q:`Find the z-score.
+                }
 
-x=${x}, μ=${meanZ}, σ=${sdZ}`,
-a:`z = ${(z).toFixed(2)}`
-});
+                if (q.type === "binomial") {
 
+                    let prob = binomial(values.n, values.k, q.p)
 
-/* -------------------------
-Sampling Method
--------------------------- */
+                    answer = prob.toFixed(4)
 
-problems.push({
-q:`A researcher divides a city into neighborhoods and randomly samples 20 households from each.
+                    steps =
+                        "P(X=k) = C(n,k)p^k(1-p)^(n-k)<br>" +
+                        "P(X=" + values.k + ") = C(" + values.n + "," + values.k + ")(" + q.p + ")^" + values.k + "(1-" + q.p + ")^(" + (values.n - values.k) + ")<br>" +
+                        "Probability = " + answer
 
-What sampling method is this?`,
-a:`Stratified sampling`
-});
+                }
 
+                if (q.type === "poisson") {
 
-/* -------------------------
-CLT
--------------------------- */
+                    let prob = poisson(values.lambda, values.k)
 
-let nCLT=rand(16,64);
+                    answer = prob.toFixed(4)
 
-problems.push({
-q:`Explain what the Central Limit Theorem says about the sampling distribution of the mean when sample size is ${nCLT}.`,
-a:`As n increases, the sampling distribution of the mean approaches a normal distribution with mean μ and standard error σ/√n`
-});
+                    steps =
+                        "P(X=k) = (λ^k e^-λ) / k!<br>" +
+                        "P(X=" + values.k + ") = (" + values.lambda + "^" + values.k + " e^-" + values.lambda + ") / " + values.k + "!<br>" +
+                        "Probability = " + answer
 
+                }
 
+                if (q.type === "empirical") {
 
-/* -------------------------
-Display
--------------------------- */
+                    if (values.sd == 1) answer = "68%"
+                    if (values.sd == 2) answer = "95%"
+                    if (values.sd == 3) answer = "99.7%"
 
-problems.forEach((p,i)=>{
+                    steps = "Empirical Rule:<br>1σ → 68%<br>2σ → 95%<br>3σ → 99.7%"
 
-let div=document.createElement("div");
-div.className="problem";
+                }
 
-div.innerHTML=
-`<b>Problem ${i+1}</b><br><br>
-${p.q}
+                if (q.type === "distribution") {
 
-<br><button onclick="toggleAnswer('ans${i}')">Show Answer</button>
+                    answer = q.answer
+                    steps = q.explanation
 
-<div id="ans${i}" class="answer">${p.a}</div>
-`;
+                }
 
-container.appendChild(div);
+                let div = document.createElement("div")
+                div.className = "problem"
 
-});
+                div.innerHTML =
 
-}
+                    "<b>Problem " + (i + 1) + "</b><br><br>" +
+                    text +
+                    "<br><button onclick=\"toggle('ans" + i + "')\">Show Answer</button>" +
+                    "<div id='ans" + i + "' class='answer'><b>Answer:</b> " + answer + "<br><br>" + steps + "</div>"
 
-generateProblems();</script>
+                container.appendChild(div)
+
+            }
+
+        }
+
+    </script>
 
 </body>
 </html>

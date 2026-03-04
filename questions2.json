@@ -1,0 +1,57 @@
+[
+  {
+    "type": "zscore",
+    "template": "Find the z-score when x={x}, μ={mu}, σ={sigma}",
+    "params": {
+      "x": [ 80, 120 ],
+      "mu": [ 90, 110 ],
+      "sigma": [ 5, 15 ]
+    }
+  },
+
+  {
+    "type": "binomial",
+    "template": "A student guesses on {n} multiple choice questions (4 options each). What is P(X={k})?",
+    "params": {
+      "n": [ 8, 12 ],
+      "k": [ 0, 4 ]
+    },
+    "p": 0.25
+  },
+
+  {
+    "type": "poisson",
+    "template": "Calls arrive at rate λ={lambda} per minute. What is P(X={k})?",
+    "params": {
+      "lambda": [ 2, 6 ],
+      "k": [ 0, 5 ]
+    }
+  },
+
+  {
+    "type": "empirical",
+    "template": "Using the empirical rule, what percent of data lies within {sd} standard deviations of the mean?",
+    "params": { "sd": [ 1, 3 ] }
+  },
+
+  {
+    "type": "distribution",
+    "template": "10 coin flips. What distribution models the number of heads?",
+    "answer": "Binomial distribution",
+    "explanation": "Fixed number of trials, two outcomes per trial, constant probability."
+  },
+
+  {
+    "type": "distribution",
+    "template": "Customers arrive at an average rate of 4 per minute. What distribution models this?",
+    "answer": "Poisson distribution",
+    "explanation": "Poisson models counts of events occurring in a fixed time interval."
+  },
+
+  {
+    "type": "distribution",
+    "template": "Human heights with a mean and standard deviation.",
+    "answer": "Normal distribution",
+    "explanation": "Continuous symmetric distribution defined by μ and σ."
+  }
+]

@@ -1,0 +1,222 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Statistics Midterm Practice</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .problem {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+
+        .answer {
+            display: none;
+            margin-top: 10px;
+            color: green;
+        }
+
+        button {
+            margin-top: 10px;
+        }
+
+        .generate {
+            display: block;
+            margin: auto;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Statistics Midterm Practice</h1>
+
+    <button class="generate" onclick="generateProblems()">Generate New Practice Set</button>
+
+    <div id="problems"></div>
+
+    <script>function rand(min,max){
+    return Math.floor(Math.random()*(max-min+1))+min;
+}
+
+function toggleAnswer(id){
+    let el=document.getElementById(id);
+    el.style.display = el.style.display==="none" ? "block":"none";
+}
+
+function generateProblems(){
+
+let container=document.getElementById("problems");
+container.innerHTML="";
+
+let problems=[];
+
+
+/* -------------------------
+Mean / Variance
+-------------------------- */
+
+let nums=[];
+for(let i=0;i<6;i++) nums.push(rand(5,40));
+
+let mean = nums.reduce((a,b)=>a+b)/nums.length;
+
+problems.push({
+q:`Dataset: {${nums.join(", ")}} <br>
+Find the sample mean.`,
+a:`Mean = ${mean.toFixed(2)}`
+});
+
+
+/* -------------------------
+Binomial
+-------------------------- */
+
+let n=rand(8,15);
+let p=0.25;
+let k=rand(0,3);
+
+problems.push({
+q:`A multiple choice test has 4 options per question.
+A student guesses on ${n} questions.
+
+What distribution models this?
+What is P(X = ${k})?`,
+a:`Distribution: Binomial(n=${n}, p=0.25)`
+});
+
+
+/* -------------------------
+Poisson
+-------------------------- */
+
+let lambda=rand(2,8);
+
+problems.push({
+q:`Calls arrive at a call center at an average rate of ${lambda} per minute.
+
+What distribution should be used?
+Write the shorthand notation.`,
+a:`Poisson distribution: X ~ Pois(${lambda})`
+});
+
+
+/* -------------------------
+Empirical Rule
+-------------------------- */
+
+let mu=rand(60,100);
+let sd=rand(5,15);
+
+problems.push({
+q:`A normal distribution has mean ${mu} and standard deviation ${sd}.
+
+Using the empirical rule, what percent of data lies between
+${mu-sd} and ${mu+sd}?`,
+a:`About 68%`
+});
+
+
+/* -------------------------
+Probability Union
+-------------------------- */
+
+let A=rand(40,70)/100;
+let B=rand(20,50)/100;
+let both=rand(5,20)/100;
+
+problems.push({
+q:`P(A)=${A}, P(B)=${B}, P(A∩B)=${both}
+
+Find P(A ∪ B).`,
+a:`P(A ∪ B) = P(A)+P(B)-P(A∩B)`
+});
+
+
+/* -------------------------
+Z Score
+-------------------------- */
+
+let x=rand(80,120);
+let meanZ=100;
+let sdZ=10;
+
+let z=(x-meanZ)/sdZ;
+
+problems.push({
+q:`Find the z-score.
+
+x=${x}, μ=${meanZ}, σ=${sdZ}`,
+a:`z = ${(z).toFixed(2)}`
+});
+
+
+/* -------------------------
+Sampling Method
+-------------------------- */
+
+problems.push({
+q:`A researcher divides a city into neighborhoods and randomly samples 20 households from each.
+
+What sampling method is this?`,
+a:`Stratified sampling`
+});
+
+
+/* -------------------------
+CLT
+-------------------------- */
+
+let nCLT=rand(16,64);
+
+problems.push({
+q:`Explain what the Central Limit Theorem says about the sampling distribution of the mean when sample size is ${nCLT}.`,
+a:`As n increases, the sampling distribution of the mean approaches a normal distribution with mean μ and standard error σ/√n`
+});
+
+
+
+/* -------------------------
+Display
+-------------------------- */
+
+problems.forEach((p,i)=>{
+
+let div=document.createElement("div");
+div.className="problem";
+
+div.innerHTML=
+`<b>Problem ${i+1}</b><br><br>
+${p.q}
+
+<br><button onclick="toggleAnswer('ans${i}')">Show Answer</button>
+
+<div id="ans${i}" class="answer">${p.a}</div>
+`;
+
+container.appendChild(div);
+
+});
+
+}
+
+generateProblems();</script>
+
+</body>
+</html>

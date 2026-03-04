@@ -34,7 +34,8 @@
     "params": {
       "z": [ -2, 2 ]
     }
-  }
+  },
+
   {
     "type": "empirical",
     "template": "Using the empirical rule, approximately what percent of data lies within {sd} standard deviations of the mean?",
@@ -42,5 +43,4 @@
       "sd": [ 1, 3 ]
     }
   }
-
 ]

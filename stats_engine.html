@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title>Statistics Exam Simulator</title>
@@ -33,9 +34,15 @@
             margin-top: 10px;
             padding: 6px 12px;
         }
+
+        canvas {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+        }
     </style>
 
 </head>
+
 
 <body>
 
@@ -44,6 +51,19 @@
     <button onclick="generate()">Generate Problem</button>
 
     <div id="problem"></div>
+
+
+
+    <h2>Normal Distribution Visualizer</h2>
+
+    <button onclick="drawNormal()">Generate Normal Problem</button>
+
+    <canvas id="normalCanvas" width="600" height="300"></canvas>
+
+    <div id="normalQuestion"></div>
+    <div id="normalAnswer"></div>
+
+
 
     <script>
 
@@ -55,13 +75,18 @@
                 questions = data
             })
 
+
         function rand(min, max) {
-
             return Math.floor(Math.random() * (max - min + 1)) + min
-
         }
 
+
         function generate() {
+
+            if (questions.length === 0) {
+                alert("Questions still loading")
+                return
+            }
 
             let q = questions[Math.floor(Math.random() * questions.length)]
 
@@ -79,7 +104,7 @@
 
                     values[key] = v
 
-                    text = text.replace("{" + key + "}", v)
+                    text = text.replaceAll("{" + key + "}", v)
 
                 }
 
@@ -141,6 +166,7 @@ ${answer}
 
         }
 
+
         function toggle() {
 
             let a = document.getElementById("answer")
@@ -151,19 +177,8 @@ ${answer}
 
 
 
+        /* NORMAL DISTRIBUTION VISUALIZER */
 
-    </script>
-
-    <h2>Normal Distribution Visualizer</h2>
-
-    <button onclick="drawNormal()">Generate Problem</button>
-
-    <canvas id="normalCanvas" width="600" height="300"></canvas>
-
-    <div id="normalQuestion"></div>
-    <div id="normalAnswer"></div>
-
-    <script>
         function drawNormal() {
 
             let canvas = document.getElementById("normalCanvas")
@@ -197,6 +212,7 @@ ${answer}
 
             ctx.stroke()
 
+
             ctx.beginPath()
 
             for (let x = -3; x <= z; x += 0.01) {
@@ -226,15 +242,16 @@ ${answer}
 
         }
 
+
         function showNormal(p) {
 
             document.getElementById("normalAnswer").innerHTML =
-
                 "Probability = " + p.toFixed(4)
 
         }
+
     </script>
 
-
 </body>
+
 </html>

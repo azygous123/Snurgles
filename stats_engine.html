@@ -149,6 +149,21 @@ ${answer}
 
         }
 
+
+
+
+    </script>
+
+    <h2>Normal Distribution Visualizer</h2>
+
+    <button onclick="drawNormal()">Generate Problem</button>
+
+    <canvas id="normalCanvas" width="600" height="300"></canvas>
+
+    <div id="normalQuestion"></div>
+    <div id="normalAnswer"></div>
+
+    <script>
         function drawNormal() {
 
             let canvas = document.getElementById("normalCanvas")
@@ -218,18 +233,7 @@ ${answer}
                 "Probability = " + p.toFixed(4)
 
         }
-
-
     </script>
-
-    <h2>Normal Distribution Visualizer</h2>
-
-    <button onclick="drawNormal()">Generate Problem</button>
-
-    <canvas id="normalCanvas" width="600" height="300"></canvas>
-
-    <div id="normalQuestion"></div>
-    <div id="normalAnswer"></div>
 
 
 </body>

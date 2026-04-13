@@ -1,0 +1,104 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Confidence Interval Practice</title>
+
+    <script src="stats.js"></script>
+
+    <style>
+
+        body {
+            font-family: Arial;
+            max-width: 900px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .problem {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+
+        .answer {
+            display: none;
+            color: green;
+            margin-top: 10px;
+        }
+
+        button {
+            margin-top: 10px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <h1>Confidence Interval Practice</h1>
+
+    <button onclick="generate()">Generate Problem</button>
+
+    <div id="problems"></div>
+
+    <script>function rand(min,max){
+return Math.floor(Math.random()*(max-min+1))+min
+}
+
+function toggle(id){
+let el=document.getElementById(id)
+el.style.display = el.style.display==="none"?"block":"none"
+}
+
+function generate(){
+
+let n=rand(10,40)
+let mean=rand(50,100)
+let sd=rand(5,15)
+
+let useT = n < 30
+
+let critical = useT ? 2.045 : 1.96
+
+let se = sd / Math.sqrt(n)
+
+let lower = mean - critical * se
+let upper = mean + critical * se
+
+let type = useT ? "t" : "z"
+
+document.getElementById("problems").innerHTML=
+
+`
+<div class="problem">
+
+Sample mean = ${mean}<br>
+Standard deviation = ${sd}<br>
+Sample size = ${n}<br><br>
+
+Construct a 95% confidence interval.
+
+<br><button onclick="toggle('ans')">Show Answer</button>
+
+<div id="ans" class="answer">
+
+Step 1: Identify distribution → ${type}-distribution<br>
+Step 2: Critical value ≈ ${critical}<br>
+Step 3: SE = s / √n = ${sd} / √${n} = ${se.toFixed(2)}<br>
+Step 4: Margin = ${critical} × ${se.toFixed(2)} = ${(critical*se).toFixed(2)}<br><br>
+
+CI = (${lower.toFixed(2)}, ${upper.toFixed(2)})
+
+</div>
+
+</div>
+`
+
+}</script>
+
+</body>
+
+</html>

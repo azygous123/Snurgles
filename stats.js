@@ -39,8 +39,20 @@ function zscore(x, mu, sigma) {
 
 }
 
+function standardError(sd, n) {
+    return sd / Math.sqrt(n)
+}
 
-/* normal distribution CDF approximation */
+function confidenceInterval(mean, critical, se) {
+    return {
+        lower: mean - critical * se,
+        upper: mean + critical * se
+    }
+}
+
+function zTest(xbar, mu0, sd, n) {
+    return (xbar - mu0) / (sd / Math.sqrt(n))
+}
 
 function normalCDF(z) {
 

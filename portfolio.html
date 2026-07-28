@@ -4,34 +4,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Snurgles</title>
+
+    <title>Portfolio | Snurgles</title>
 
     <style>
+        /* ------------------------------
+           General page styling
+        ------------------------------ */
 
-        /* Page styling */
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
 
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg,#1f1f1f,#2e2b2d);
-            color: #eee;
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #1f1f1f, #2e2b2d);
+            background-attachment: fixed;
+            color: #eeeeee;
+            line-height: 1.6;
         }
 
-        /* Navigation bar */
+        a {
+            color: #9ecbff;
+        }
+
+        /* ------------------------------
+           Navigation
+        ------------------------------ */
 
         .navbar {
             position: fixed;
             top: 0;
+            left: 0;
+            z-index: 1000;
             width: 100%;
-            background: #222;
             padding: 12px 20px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px 24px;
+            background: #222222;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
         }
 
             .navbar a {
                 color: #9ecbff;
                 text-decoration: none;
-                margin-right: 25px;
                 font-weight: bold;
             }
 
@@ -41,48 +64,260 @@
                 }
 
                 .navbar a.active {
-                    color: white;
+                    color: #ffffff;
                     border-bottom: 2px solid #9ecbff;
                     padding-bottom: 2px;
                 }
 
-        /* Main content */
+        /* ------------------------------
+           Main layout
+        ------------------------------ */
 
         .container {
-            max-width: 800px;
-            margin: 120px auto 60px auto;
-            text-align: center;
+            width: min(1100px, calc(100% - 40px));
+            margin: 125px auto 60px;
+        }
+
+        section {
+            margin-bottom: 70px;
+        }
+
+        h1,
+        h2,
+        h3 {
+            margin-top: 0;
         }
 
         h1 {
-            font-size: 3rem;
+            margin-bottom: 12px;
+            font-size: clamp(2.5rem, 7vw, 4.5rem);
             letter-spacing: 2px;
+            line-height: 1.1;
         }
 
-        .links {
-            margin-top: 30px;
+        h2 {
+            margin-bottom: 25px;
+            font-size: 2rem;
+            border-bottom: 2px solid #444444;
+            padding-bottom: 8px;
+        }
+
+        h3 {
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-top: 0;
+        }
+
+        /* ------------------------------
+           Intro / hero
+        ------------------------------ */
+
+        .hero {
+            min-height: 480px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 850px;
+        }
+
+        .hero-label {
+            margin-bottom: 10px;
+            color: #9ecbff;
+            font-size: 1.05rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .hero-description {
+            max-width: 720px;
+            margin: 0 auto 30px;
+            color: #cccccc;
+            font-size: 1.2rem;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 11px 20px;
+            border: 1px solid #9ecbff;
+            border-radius: 5px;
+            background: #9ecbff;
+            color: #171717;
+            font-weight: bold;
+            text-decoration: none;
+            transition: background 0.2s, color 0.2s, transform 0.2s;
+        }
+
+            .button:hover {
+                background: #ffffff;
+                border-color: #ffffff;
+                transform: translateY(-2px);
+            }
+
+            .button.secondary {
+                background: transparent;
+                color: #9ecbff;
+            }
+
+                .button.secondary:hover {
+                    background: #9ecbff;
+                    color: #171717;
+                }
+
+        /* ------------------------------
+           Project cards
+        ------------------------------ */
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 22px;
+        }
+
+        .project-card {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            min-height: 300px;
+            padding: 25px;
+            background: rgba(34, 34, 34, 0.92);
+            border: 1px solid #444444;
+            border-radius: 8px;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.25);
+            transition: transform 0.2s, border-color 0.2s;
         }
 
-            .links a {
-                color: #9ecbff;
+            .project-card:hover {
+                transform: translateY(-4px);
+                border-color: #9ecbff;
+            }
+
+        .project-type {
+            margin-bottom: 8px;
+            color: #9ecbff;
+            font-size: 0.85rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .project-card p {
+            color: #cccccc;
+        }
+
+        .project-links {
+            margin-top: auto;
+            padding-top: 16px;
+        }
+
+            .project-links a {
+                margin-right: 15px;
+                font-weight: bold;
                 text-decoration: none;
             }
 
-                .links a:hover {
+                .project-links a:hover {
                     color: #ffffff;
                     text-decoration: underline;
                 }
+
+        /* ------------------------------
+           Skills
+        ------------------------------ */
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+        }
+
+        .skill-group {
+            padding: 22px;
+            background: rgba(34, 34, 34, 0.8);
+            border-left: 4px solid #9ecbff;
+            border-radius: 5px;
+        }
+
+            .skill-group ul {
+                margin: 10px 0 0;
+                padding-left: 20px;
+                color: #cccccc;
+            }
+
+        /* ------------------------------
+           About and resume sections
+        ------------------------------ */
+
+        .content-panel {
+            padding: 28px;
+            background: rgba(34, 34, 34, 0.85);
+            border: 1px solid #444444;
+            border-radius: 8px;
+        }
+
+            .content-panel p:last-child {
+                margin-bottom: 0;
+            }
+
+        /* ------------------------------
+           Footer
+        ------------------------------ */
+
+        footer {
+            padding: 25px 20px;
+            text-align: center;
+            color: #aaaaaa;
+            background: #1b1b1b;
+            border-top: 1px solid #333333;
+        }
+
+        /* ------------------------------
+           Mobile layout
+        ------------------------------ */
+
+        @media (max-width: 700px) {
+            .navbar {
+                position: static;
+                justify-content: center;
+                padding: 15px;
+            }
+
+            .container {
+                width: min(100% - 24px, 1100px);
+                margin-top: 40px;
+            }
+
+            .hero {
+                min-height: auto;
+                padding: 50px 0 70px;
+            }
+
+            h1 {
+                font-size: 2.6rem;
+            }
+
+            .hero-description {
+                font-size: 1.05rem;
+            }
+        }
     </style>
-
 </head>
-
 
 <body>
 
-    <div class="navbar">
+    <nav class="navbar" aria-label="Main navigation">
         <a href="index.html">Snurgles.com</a>
         <a href="stats_final.html">Statistics Final</a>
         <a href="cs3195.html">Analysis of Algorithms</a>
@@ -91,36 +326,247 @@
         <a href="toads.html">Toads with Guns</a>
         <a href="portfolio.html" class="active">Portfolio</a>
         <a href="about.html">About</a>
-    </div>
+    </nav>
 
+    <main class="container">
 
-    <div class="container">
+        <!-- Introduction -->
 
-        <h2>Toads with Guns:</h2>
+        <section class="hero">
+            <div class="hero-content">
+                <div class="hero-label">Software • Embedded Systems • Game Development</div>
 
-        <div style="text-align: center;">
-            <p>
-                <strong>Toads with Guns</strong> is a stylized tower defense game developed in Unity
-                that blends classic strategy gameplay with a unique swamp-noir aesthetic.
+                <h1>Dustin Goodpaster</h1>
 
-                Players defend their territory as armed toads against waves of mutant insects,
-                strategically placing towers, managing resources, and adapting to increasingly
-                complex enemy behaviors.
+                <p class="hero-description">
+                    Computer science student and software developer interested in embedded
+                    systems, computer architecture, game development, and building software
+                    that connects code with real-world systems.
+                </p>
 
-                The project emphasizes modular game architecture, with core systems such as
-                enemy spawning, pathfinding, combat targeting, and game state management built
-                using a combination of C# classes and Unity components.
+                <div class="button-group">
+                    <a class="button" href="#projects">View Projects</a>
+                    <a class="button secondary" href="#skills">View Skills</a>
+                    <a class="button secondary" href="#resume">Resume</a>
+                </div>
+            </div>
+        </section>
 
-                Designed as a team-based software engineering project,
-                <em>Toads with Guns</em> highlights both technical implementation and collaborative
-                development, showcasing skills in game systems design, object-oriented programming,
-                and real-time interactive gameplay.
-            </p>
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/P8CgxACWerI?si=kuBA7oOf9Gqhxru7" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <!-- Featured projects -->
 
-        </div>
+        <section id="projects">
+            <h2>Featured Projects</h2>
 
-    </div>
+            <div class="project-grid">
+
+                <article class="project-card">
+                    <div class="project-type">Python • AVR • Computer Architecture</div>
+
+                    <h3>Harmonia AVR Simulator</h3>
+
+                    <p>
+                        A custom AVR processor simulator and development environment designed
+                        to model instructions, registers, memory, program execution, and
+                        eventually communication with physical circuits.
+                    </p>
+
+                    <p>
+                        Add more information here about the simulator architecture, interface,
+                        supported instructions, and your long-term goals for the project.
+                    </p>
+
+                    <div class="project-links">
+                        <a href="harmonia.html">Project Page</a>
+
+                        <!-- Add a GitHub link when ready -->
+                        <!--
+                        <a href="YOUR_GITHUB_URL">GitHub</a>
+                        -->
+                    </div>
+                </article>
+
+                <article class="project-card">
+                    <div class="project-type">Unity • C# • Team Development</div>
+
+                    <h3>Toads with Guns</h3>
+
+                    <p>
+                        A tower defense game developed in Unity featuring armed toads,
+                        mutant insects, resource management, enemy waves, tower placement,
+                        pathfinding, combat targeting, and game-state systems.
+                    </p>
+
+                    <p>
+                        The project was developed as part of a team-based software engineering
+                        course and provided experience with collaboration, source control,
+                        debugging, and modular game architecture.
+                    </p>
+
+                    <div class="project-links">
+                        <a href="toads.html">Project Page</a>
+                    </div>
+                </article>
+
+                <article class="project-card">
+                    <div class="project-type">C • AVR Assembly • Electronics</div>
+
+                    <h3>Embedded Systems Projects</h3>
+
+                    <p>
+                        A growing collection of experiments involving Arduino, AVR assembly,
+                        LCD displays, joystick input, LEDs, buttons, transistor logic gates,
+                        and direct interaction with microcontroller hardware.
+                    </p>
+
+                    <p>
+                        Add photographs, circuit diagrams, source code, and short explanations
+                        as these projects develop.
+                    </p>
+
+                    <div class="project-links">
+                        <!-- Replace # with a real page later -->
+                        <a href="#">Coming Soon</a>
+                    </div>
+                </article>
+
+                <article class="project-card">
+                    <div class="project-type">C# • ASP.NET • HTML • CSS • JavaScript</div>
+
+                    <h3>Web Development</h3>
+
+                    <p>
+                        Web projects developed using HTML, CSS, JavaScript, ASP.NET,
+                        Razor Pages, databases, and static-site hosting.
+                    </p>
+
+                    <p>
+                        This section can eventually include Snurgles.com, your portfolio work,
+                        database projects, and the Soaring Hock Sales website.
+                    </p>
+
+                    <div class="project-links">
+                        <a href="index.html">Explore Snurgles</a>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- Technical skills -->
+
+        <section id="skills">
+            <h2>Technical Skills</h2>
+
+            <div class="skills-grid">
+
+                <div class="skill-group">
+                    <h3>Languages</h3>
+                    <ul>
+                        <li>C</li>
+                        <li>C++</li>
+                        <li>C#</li>
+                        <li>Python</li>
+                        <li>Java</li>
+                        <li>AVR Assembly</li>
+                        <li>JavaScript</li>
+                    </ul>
+                </div>
+
+                <div class="skill-group">
+                    <h3>Software Development</h3>
+                    <ul>
+                        <li>Object-oriented programming</li>
+                        <li>Data structures and algorithms</li>
+                        <li>Debugging and testing</li>
+                        <li>Git and GitHub</li>
+                        <li>Team-based development</li>
+                    </ul>
+                </div>
+
+                <div class="skill-group">
+                    <h3>Tools and Frameworks</h3>
+                    <ul>
+                        <li>Visual Studio</li>
+                        <li>Visual Studio Code</li>
+                        <li>Unity</li>
+                        <li>ASP.NET Core</li>
+                        <li>Razor Pages</li>
+                        <li>PyQt6</li>
+                        <li>MySQL</li>
+                    </ul>
+                </div>
+
+                <div class="skill-group">
+                    <h3>Systems and Hardware</h3>
+                    <ul>
+                        <li>Linux and Windows</li>
+                        <li>Arduino and AVR</li>
+                        <li>Raspberry Pi</li>
+                        <li>Computer architecture</li>
+                        <li>Embedded systems</li>
+                        <li>Basic electronics</li>
+                    </ul>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- About -->
+
+        <section id="about">
+            <h2>About Me</h2>
+
+            <div class="content-panel">
+                <p>
+                    I am a computer science student at the University of Idaho with interests
+                    in embedded software, computer architecture, automotive systems, game
+                    development, and full-stack software development.
+                </p>
+
+                <p>
+                    I enjoy learning how software works at every level—from circuits,
+                    processors, and memory to user interfaces, web applications, and games.
+                    My current work includes the Harmonia AVR simulator, embedded-system
+                    experiments, and continued development of Toads with Guns.
+                </p>
+
+                <!-- Add a more personal paragraph here later:
+                     What motivates you?
+                     What type of work are you seeking?
+                     What are you currently learning?
+                -->
+            </div>
+        </section>
+
+        <!-- Resume -->
+
+        <section id="resume">
+            <h2>Resume</h2>
+
+            <div class="content-panel">
+                <h3>Resume Coming Soon</h3>
+
+                <p>
+                    I am currently updating my resume to better reflect my software,
+                    embedded-systems, game-development, and web-development experience.
+                </p>
+
+                <!-- Once the PDF is ready, place it beside this HTML file
+                     and replace the commented link below.
+
+                <a class="button" href="Dustin-Goodpaster-Resume.pdf">
+                    Download Resume
+                </a>
+                -->
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Dustin Goodpaster · Snurgles.com</p>
+    </footer>
 
 </body>
+
 </html>
